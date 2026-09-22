@@ -1,0 +1,8 @@
+{
+    "uuid": "qbittorrent@martzy",
+    "name": "qBittorrent Monitor",
+    "description": "Shows the latest torrent's name and progress bar in the panel",
+    "icon": "network-transmit-receive-symbolic",
+    "version": "1.0",
+    "max-instances": -1
+}
