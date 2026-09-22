@@ -1,6 +1,6 @@
 # qBittorrent Monitor (Cinnamon applet)
 
-Shows the most recently added torrent's name and a progress bar directly in the panel, polling qBittorrent's WebUI API.
+Shows the most recently added torrent's name and progress in the panel, polling qBittorrent's WebUI API. Includes pause/resume and delete buttons, and a dropdown listing other active torrents.
 
 ## Requirements
 
@@ -43,17 +43,22 @@ Right-click the applet in the panel > **Configure...**
 
 - **URL** — the full WebUI base URL, with scheme and no trailing slash, e.g.:
   - `http://127.0.0.1:8081` (local, default port)
-  - `https://martzy.priam.usbx.me/qbittorrent` (reverse-proxied domain, path prefix, no port — omit the port entirely when the proxy handles it on 80/443)
+  - `https://your.domain/qbittorrent` (reverse-proxied domain, path prefix, no port — omit the port entirely when the proxy handles it on 80/443)
 - **Username / Password** — leave blank if using the localhost-bypass option above
 - **Refresh interval** — how often to poll (seconds)
-- **Max label length** — how many characters of the torrent name to show
-- **Left-click action** — open the WebUI in a browser, or force an immediate refresh
+- **Panel label width** — max torrent name length shown before truncating
+- **Torrents to show in the dropdown** — how many extra torrents appear in the dropdown, in addition to the one in the panel
 
-Right-click also gives you "Refresh now" and "Open WebUI" shortcuts.
+## Using it
+
+- The panel shows the latest torrent's name and progress, followed by a pause/resume button and a delete button.
+- **Left-click** anywhere on the panel row except those two buttons to open a dropdown listing the next torrents (each with its own pause/resume and delete buttons).
+- **Right-click** for the context menu: Configure, Refresh now, Open WebUI.
+- Deleting a torrent always asks for confirmation first, since it can remove the downloaded files.
 
 ## Notes / limitations
 
-- The password is stored in plain text by Cinnamon's xlet settings system (under `~/.config/cinnamon/spices-settings/qbittorrent@martzy/`) — there's no masking or encryption available in the applet settings framework. Prefer the localhost-bypass option, or a qBittorrent account with limited scope, if that's a concern.
+- The password is stored in plain text by Cinnamon's xlet settings system (under `~/.config/cinnamon/spices/qbittorrent@martzy/`) — there's no masking or encryption available in the applet settings framework. Prefer the localhost-bypass option, or a qBittorrent account with limited scope, if that's a concern.
 - "Latest torrent" = the most recently **added** torrent (`sort=added_on`), not necessarily the one currently downloading fastest.
 - If qBittorrent's WebUI isn't reachable, or login fails, the panel shows "Error" — hover over it for the reason.
 
@@ -61,4 +66,4 @@ Right-click also gives you "Refresh now" and "Open WebUI" shortcuts.
 
 - `metadata.json` — applet identity (uuid `qbittorrent@martzy`)
 - `settings-schema.json` — drives the Configure dialog
-- `applet.js` — polling + rendering logic (uses `curl` under the hood for the qBittorrent WebUI API, so there's no libsoup version dependency)
+- `applet.js` — polling, rendering, and pause/resume/delete logic (uses `curl` under the hood for the qBittorrent WebUI API, so there's no libsoup version dependency)
