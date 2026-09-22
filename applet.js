@@ -15,7 +15,7 @@ function _(str) {
 }
 
 class QbittorrentApplet extends Applet.TextIconApplet {
-    constructor(orientation, panel_height, instance_id) {
+    constructor(metadata, orientation, panel_height, instance_id) {
         super(orientation, panel_height, instance_id);
 
         this._busy = false;
@@ -27,7 +27,9 @@ class QbittorrentApplet extends Applet.TextIconApplet {
             `qbittorrent-applet-${instance_id}-cookies.txt`
         ]);
 
-        this.set_applet_icon_symbolic_name("network-transmit-receive");
+        this.set_applet_icon_path(GLib.build_filenamev([metadata.path, "icon.png"]));
+        this._applet_icon.style = "padding-right: 4px;";
+        this._applyIconSize();
         this.set_applet_label(_("qBittorrent"));
         this.set_applet_tooltip(_("qBittorrent Monitor"));
 
@@ -92,6 +94,20 @@ class QbittorrentApplet extends Applet.TextIconApplet {
             this._deleteIcon.hide();
             this._currentTorrent = null;
         }
+    }
+
+    _applyIconSize() {
+        // Cinnamon resets full-color applet icons to the panel zone's default
+        // size on layout/height changes; these hooks re-apply our fixed size.
+        this._applet_icon.set_icon_size(16);
+    }
+
+    on_panel_icon_size_changed(size) {
+        this._applyIconSize();
+    }
+
+    on_panel_height_changed() {
+        this._applyIconSize();
     }
 
     _baseUrl() {
@@ -465,5 +481,5 @@ class QbittorrentApplet extends Applet.TextIconApplet {
 }
 
 function main(metadata, orientation, panel_height, instance_id) {
-    return new QbittorrentApplet(orientation, panel_height, instance_id);
+    return new QbittorrentApplet(metadata, orientation, panel_height, instance_id);
 }

@@ -2,7 +2,6 @@
     "uuid": "qbittorrent@martzy",
     "name": "qBittorrent Monitor",
     "description": "Shows the latest torrent's name and progress in the panel, with pause/resume/delete buttons and a dropdown for other active torrents",
-    "icon": "network-transmit-receive-symbolic",
     "version": "1.0",
     "max-instances": -1
 }
